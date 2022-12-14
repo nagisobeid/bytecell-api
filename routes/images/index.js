@@ -2,20 +2,19 @@ const db = require( '../../db' )
 
 module.exports = {
     routes: [
-        /*{
+        {
             //the sproc needs to be modidifed in sql, chnges were made
             url: '/images',
             routes : {
-                get : async ( req, res ) => {
+                post : async ( req, res ) => {
                     try {
                         const pool = await db.appPool
-                        const result = await pool.request()
-                        .input( 'variantId', db.sql.Int, req.body.bcid )
-                        .input( 'variantId2', db.sql.Int, req.body.id )
-                        .input( 'variantTitle', db.sql.NVarChar( 225 ), req.body.variantTitle )
-                        .input( 'imgName', db.sql.NVarChar( 255 ), req.body.imgName )
-                        .execute( 'InsertImage', (err, result) => {
-                            res.status( 200 ).json( { message: 'success' } )
+                        const request = await pool.request()
+                        .input( 'UUID',  req.body.UUID )
+                        .input( 'TITLE',  req.body.TITLE )
+                        .input( 'IMGNAME',  req.body.IMGNAME )
+                        .execute( 'InsertImage', (err, response) => {
+                            res.status( 200 ).json( { message: 'success', data: response.recordset } )
                         })
                     } catch ( err ) {
                         res.status( 500 ).json( { message: 'error', data: err } )
@@ -23,7 +22,22 @@ module.exports = {
                 } 
             } 
         },
-        */
+        {
+            url: '/images/imgcount',
+            routes : {
+                get : async ( req, res ) => {
+                    try {
+                        const pool = await db.appPool
+                        const result = await pool.request()
+                        .query( `execute [dbo].[getProductsAndImgCount]` )
+                        
+                        res.status( 200 ).json( { message: 'success', data: result.recordset } )
+                    } catch ( err ) {
+                        res.status( 500 ).json( { message: 'error', data: err } )
+                    }
+                } 
+            } 
+        },
         {
             url: '/images/missing',
             routes : {

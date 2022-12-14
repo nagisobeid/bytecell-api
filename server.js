@@ -29,8 +29,8 @@ app.use(router)
 app.disable('etag');
 
 
-const server = app.listen( process.env.PORT, function () {
-  const host = process.env.HOST
-  const port = server.address().port;
+const server = app.listen( process.env.API_PORT, function () {
+  const host = server.address().address//process.env.HOST
+  const port = process.env.API_PORT// server.address().port;
   console.log( 'app listening at http://%s:%s', host, port )
 } )
