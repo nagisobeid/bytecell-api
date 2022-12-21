@@ -7,9 +7,10 @@ let { registerRoutes } = require('./util/registerRoutes');
 const { application } = require('express');
 let router = express.Router();
 
-app.use(express.json());
+app.use(express.json({limit: '50mb'}));
+app.set('trust proxy', true)
 app.use(bp.json())
-app.use(bp.urlencoded({ extended: true }))
+app.use(bp.urlencoded({limit: '50mb', extended: true }))
 app.use(morgan('combined'))
 
 registerRoutes( router )

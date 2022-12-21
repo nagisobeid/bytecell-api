@@ -53,6 +53,24 @@ module.exports = {
             }
         },
         {
+            url: '/products/syncstatus',
+            routes : {
+                post : async ( req, res ) => {
+                    try {
+                        const pool = await db.appPool
+                        const request = await pool.request()
+                        .input( 'UUID',  req.body.UUID )
+                        .input( 'INSHPFY',  req.body.INSHPFY )
+                        .execute( 'UpdateProdSyncStatus', (err, response) => {
+                            res.status( 200 ).json( { message: 'success', data: response.recordset } )
+                        })
+                    } catch ( err ) {
+                        res.status( 500 ).json( { message: 'error', data: err } )
+                    }
+                } 
+            } 
+        },
+        {
             url: '/products/:uuid/:color/:condition',
             routes : {
                 get : async ( req, res ) => {
