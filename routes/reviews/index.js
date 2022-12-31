@@ -28,6 +28,36 @@ module.exports = {
                 } 
             } 
         },
+        {
+            url: '/reviews/rename',
+            routes : {
+                put : async ( req, res ) => {
+                    //console.log( req.body )
+                    //return
+                    for( let i = 0; i < req.body.REVIEWS.length; i++ ) {
+                        //console.log( req.body.REVIEWS)
+                        //console.log( req.body.REVIEWS[i].ID )
+                        
+                        try {
+                            const pool = await db.appPool
+                            const request = await pool.request()
+                            .input( 'UUID',  req.body.REVIEWS[i].UUID )
+                            .input( 'ID',  req.body.REVIEWS[i].ID )
+                            .input( 'FN',  req.body.REVIEWS[i].FN )
+                            .execute( 'RenameReview', (err, response) => {
+                                //ok
+                                //console.log( response )
+                            })
+                        } catch ( err ) {
+                            res.status( 500 ).json( { message: 'error', data: err } )
+                        }
+                        
+                    }
+                    res.status( 200 ).json( { message: 'success', data: 'NODATA' } )
+                    
+                } 
+            } 
+        },
         /*{
             url: '/reviews',
             routes : {
@@ -55,6 +85,22 @@ module.exports = {
                 } 
             } 
         },*/
+        {
+            url: '/reviews',
+            routes : {
+                get : async ( req, res ) => {
+                    try {
+                        const pool = await db.appPool
+                        const result = await pool.request()
+                        .query( `SELECT * FROM REVIEWS` )
+                        
+                        res.status( 200 ).json( { message: 'success', data: result.recordset } )
+                    } catch ( err ) {
+                        res.status( 500 ).json( { message: 'error', data: err } )
+                    }
+                } 
+            } 
+        },
         {
             url: '/reviews/missing',
             routes : {
