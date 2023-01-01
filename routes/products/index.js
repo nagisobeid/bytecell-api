@@ -124,32 +124,16 @@ module.exports = {
         },
         */
         {
-            url: '/products/checkprices', //[getUuidsForPriceChecks]
+            url: '/products/checkprices',
             routes : {
                 get : async ( req, res ) => {
+                    console.log( req.query )
                     try {
-                        let response = await executeSproc( 'getUuidsForPriceChecks' )
-                        if ( response.status === 'failed' ) {
-                            res.status( 500 ).json( { message: 'error', data: response } )
-                            return
-                        }
-                        res.status( 200 ).json( { message: 'success', data: response.data.recordset } )
+                        let response = await executeSproc( 'getUuidsForPriceChecks', req.query )
+                        res.send( response.recordsets[0] )
                     } catch ( err ) {
-                        res.status( 500 ).json( { message: 'error', data: err } )
+                        res.status( 500 ).json( err )
                     }
-                    /*try {
-                        const pool = await db.appPool
-                        const result = await pool.request()
-                        .execute( `getUuidsForPriceChecks`, (err, response) => { 
-                            if (err) {
-                                res.status( 500 ).json( { message: 'error', data: err } )
-                                return
-                            }
-                            res.status( 200 ).json( { message: 'success', data: response.recordset } )
-                        })
-                    } catch ( err ) {
-                        res.status( 500 ).json( { message: 'errorx', data: err } )
-                    }*/
                 } 
             } 
         },
@@ -257,7 +241,27 @@ module.exports = {
                     @BMPRICE MONEY = Null,
                     @AVAILSTATUS BIT = Null
         */
-            url: '/products',
+                    url: '/products',
+                    routes : {
+                        put : async ( req, res ) => {
+                            try {
+                                let response = await executeSproc( 'updateProducts', req.body )
+                                res.send( response )
+                            } catch ( err ) {
+                                res.status( 500 ).json( err )
+                                return
+                            }
+                        } 
+                    } 
+                },
+        {/*
+                    @UUID nvarchar(MAX) = Null,
+                    @CONDITION nvarchar(MAX) = Null,
+                    @PRICE MONEY = Null,
+                    @BMPRICE MONEY = Null,
+                    @AVAILSTATUS BIT = Null
+        */
+            url: '/xxproducts',
             routes : {
                 put : async ( req, res ) => {
                     let failed = 0
@@ -292,8 +296,6 @@ module.exports = {
                         res.status( 500 ).json( err )
                         return
                     }
-                    //res.status( 200 ).json( { message: 'success', data: { 'updated' : req.body.PRODUCTS.length - failed, 'failed' : { 'count' : failed, 'list' : failedList } } } )
-                    //return
                 } 
             } 
         },
@@ -311,25 +313,9 @@ module.exports = {
                     } catch ( err ) {
                         res.status( 500 ).json( { message: 'error', data: err } )
                     }
-                    /*try {
-                        const pool = await db.appPool
-                        const request = await pool.request()
-                        .input( 'uuid', db.sql.VarChar, req.params.uuid )
-                        .input( 'color', db.sql.VarChar( 255 ), req.params.color )
-                        .input( 'condition', db.sql.VarChar( 225 ), req.params.condition )
-                        .execute( 'getProduct', (err, response ) => {
-                    
-                            res.status( 200 ).json( { message: 'success', data: response.recordset } )
-                        })
-                    } catch ( err ) {
-                        res.status( 500 ).json( { message: 'error', data: err } )
-                    } */ 
                 }
             }
         },
-        //router
     ] 
 };
 
-
-//module.exports = router
