@@ -132,6 +132,7 @@ module.exports = {
                         let response = await executeSproc( 'getUuidsForPriceChecks', req.query )
                         res.send( response.recordsets[0] )
                     } catch ( err ) {
+			console.log( err )
                         res.status( 500 ).json( err )
                     }
                 } 
@@ -248,6 +249,7 @@ module.exports = {
                                 let response = await executeSproc( 'updateProducts', req.body )
                                 res.send( response )
                             } catch ( err ) {
+				console.log( err )
                                 res.status( 500 ).json( err )
                                 return
                             }

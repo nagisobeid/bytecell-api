@@ -7,6 +7,7 @@ const config = {
     password: process.env.DB_PWD,
     database: process.env.DB,
     server: process.env.DB_SRVR,
+    requestTimeout : 130000,
     pool: {
       max: 10,
       min: 0,

@@ -3,6 +3,10 @@ const express = require( 'express' )
 const bp = require('body-parser')
 const morgan = require('morgan')
 const app = express()
+const cors = require( 'cors' )
+
+app.use( cors() )
+
 let { registerRoutes } = require('./util/registerRoutes');
 const { application } = require('express');
 let router = express.Router();
