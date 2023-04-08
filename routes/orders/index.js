@@ -34,6 +34,7 @@ module.exports = {
 
                     const columns = {
                         id : { DataType : db.sql.VarChar, Nullable : { nullable: false } },
+                        variant_id : { DataType : db.sql.VarChar, Nullable : { nullable: true } },
                         browser_ip : { DataType : db.sql.VarChar, Nullable : { nullable: true } },
                         checkout_id : { DataType : db.sql.VarChar, Nullable : { nullable: true } },
                         created_at : { DataType : db.sql.VarChar, Nullable : { nullable: true } },
